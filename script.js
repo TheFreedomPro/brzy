@@ -1,5 +1,4 @@
 (() => {
-  "use strict";
 
   const $ = (id) => document.getElementById(id);
 
@@ -51,6 +50,7 @@
   }
 
   function wireMainCalc() {
+
     const billEl = $("bill");
     const solarEl = $("solarPayment");
     const yearsEl = $("yearsRange");
@@ -71,6 +71,7 @@
     const selAnnualSavingsEl = $("selAnnualSavings");
 
     function recalc() {
+
       const bill = num(billEl.value, 0);
       const solar = num(solarEl.value, 0);
       const years = clamp(parseInt(yearsEl.value || "25", 10), 1, 30);
@@ -84,24 +85,22 @@
       const solarTotal = sumSeries(solar, solarEsc, years);
       const savings = utilTotal - solarTotal;
 
-      if (utilTotalEl) utilTotalEl.textContent = money0(utilTotal);
-      if (solarTotalEl) solarTotalEl.textContent = money0(solarTotal);
-      if (savingsEl) savingsEl.textContent = money0(savings);
+      utilTotalEl.textContent = money0(utilTotal);
+      solarTotalEl.textContent = money0(solarTotal);
+      savingsEl.textContent = money0(savings);
 
-      if (snapYearEl) snapYearEl.textContent = String(years);
+      snapYearEl.textContent = String(years);
 
       const uM = monthAtYear(bill, utilEsc, years);
       const sM = monthAtYear(solar, solarEsc, years);
-      const mS = uM - sM;
+      const mS = Math.max(0, uM - sM);
       const aS = mS * 12;
 
-      if (selMonthlyUtilityEl) selMonthlyUtilityEl.textContent = money2(uM);
-      if (selMonthlySolarEl) selMonthlySolarEl.textContent = money2(sM);
-      if (selMonthlySavingsEl) selMonthlySavingsEl.textContent = money2(mS);
-      if (selAnnualSavingsEl) selAnnualSavingsEl.textContent = money2(aS);
+      selMonthlyUtilityEl.textContent = money2(uM);
+      selMonthlySolarEl.textContent = money2(sM);
+      selMonthlySavingsEl.textContent = money2(mS);
+      selAnnualSavingsEl.textContent = money2(aS);
     }
-
-    yearsDisplayEl.textContent = yearsEl.value || "25";
 
     billEl.addEventListener("input", recalc);
     solarEl.addEventListener("input", recalc);
@@ -119,29 +118,24 @@
 
   const PROGRAMS = {
     APS_TESLA_VPP: {
-      label: "APS Tesla Virtual Power Plant",
       ratePerKwYear: 110,
       capPerBatteryYear: 400,
-      note:
-        "APS Tesla VPP: estimate is kW-based but capped by an annual per-battery maximum. Tesla cites up to $400 per battery per year."
+      note: "APS Tesla VPP estimate. Annual per-battery cap applied."
     },
     APS_KW_REWARD: {
-      label: "APS Storage Rewards (kW-based)",
       ratePerKwYear: 110,
       capPerBatteryYear: null,
-      note:
-        "APS kW-based estimate: uses $110 per kW-year style assumption. Actual program payouts vary by events/performance."
+      note: "APS kW-based estimate using ~$110 per kW-year."
     },
     SRP_BATTERY_PARTNER: {
-      label: "SRP Battery Partner",
       ratePerKwYear: 110,
       capPerBatteryYear: null,
-      note:
-        "SRP Battery Partner: $55 per kW per season, 2 seasons/year (annualized here). Actual is based on measured event performance vs baseline."
+      note: "SRP Battery Partner: $55 per kW per season × 2 seasons."
     }
   };
 
   function wireBatteryCalc() {
+
     const programEl = $("program");
     const modelEl = $("batteryModel");
     const qtyEl = $("batteryQty");
@@ -157,21 +151,23 @@
     const annualOut = $("annualCredit");
     const noteOut = $("creditNote");
 
-    if (
-      !programEl || !modelEl || !qtyEl || !commitEl || !perfEl ||
-      !usableEl || !powerEl || !creditedEl ||
-      !btn || !monthlyOut || !annualOut || !noteOut
-    ) return;
+    if (!programEl || !modelEl || !qtyEl || !commitEl || !perfEl ||
+        !usableEl || !powerEl || !creditedEl ||
+        !btn || !monthlyOut || !annualOut || !noteOut) return;
 
-    modelEl.innerHTML = BATTERIES.map(b => `<option value="${b.id}">${b.label}</option>`).join("");
-    if (!modelEl.value) modelEl.value = BATTERIES[0].id;
+    modelEl.innerHTML = BATTERIES
+      .map(b => `<option value="${b.id}">${b.label}</option>`)
+      .join("");
 
-    const getBattery = () => BATTERIES.find(b => b.id === modelEl.value) || BATTERIES[0];
+    const getBattery = () =>
+      BATTERIES.find(b => b.id === modelEl.value) || BATTERIES[0];
 
-    function updateDerived() {
+    function calcCredit() {
+
       const b = getBattery();
       const qty = clamp(parseInt(qtyEl.value || "1", 10), 1, 99);
       const perf = clamp(num(perfEl.value, 0.85), 0, 1);
+      const commitPerBattery = clamp(num(commitEl.value, 3), 0, 100);
 
       const usable = b.usableKwh * qty * perf;
       const maxPower = b.powerKw * qty * perf;
@@ -179,17 +175,10 @@
       usableEl.value = usable.toFixed(1);
       powerEl.value = maxPower.toFixed(1);
 
-      const commitPerBattery = clamp(num(commitEl.value, 0), 0, 1e6);
       const credited = Math.min(commitPerBattery * qty * perf, maxPower);
-
       creditedEl.value = credited.toFixed(2);
 
-      return { b, qty, perf, maxPower, credited };
-    }
-
-    function calcCredit() {
-      const { b, qty, perf, credited } = updateDerived();
-      const programKey = programEl.value || "APS_TESLA_VPP";
+      const programKey = programEl.value;
       const p = PROGRAMS[programKey] || PROGRAMS.APS_TESLA_VPP;
 
       let annual = credited * p.ratePerKwYear;
@@ -203,9 +192,8 @@
 
       annualOut.textContent = money0(annual);
       monthlyOut.textContent = money0(monthly);
-
       noteOut.textContent =
-        `${p.note} Battery: ${b.label}. Qty: ${qty}. Perf: ${Math.round(perf * 100)}%. Credited kW (avg): ${credited.toFixed(2)}.`;
+        `${p.note} Credited kW: ${credited.toFixed(2)}.`;
     }
 
     programEl.addEventListener("change", calcCredit);
@@ -222,4 +210,5 @@
     wireMainCalc();
     wireBatteryCalc();
   });
+
 })();
