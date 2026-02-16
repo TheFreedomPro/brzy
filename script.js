@@ -109,109 +109,144 @@ document.querySelectorAll('.faq-toggle').forEach(btn => {
   });
 });
   // First paint
-  /* ===== BATTERY CREDIT + E-28 CALCULATOR ===== */
+// ===============================
+// BATTERY + UTILITY CALCULATOR
+// ===============================
 
-const batteryCatalog = {
-  "Tesla Powerwall 3": { usableKwh: 13.5, dischargeKw: 11.5 },
-  "Tesla Powerwall 2": { usableKwh: 13.5, dischargeKw: 5.0 },
-  "FranklinWH aPower": { usableKwh: 13.6, dischargeKw: 5.0 },
-  "Enphase IQ Battery 10T": { usableKwh: 10.0, dischargeKw: 3.84 }
-};
+(function(){
 
-const programs = {
-  SRP_BATTERY_PARTNER: { annualDollarsPerKw: 110 },
-  APS_TESLA_VPP: { annualDollarsPerKw: 110 }
-};
+  // ---- Battery Specs ----
+  const BATTERIES = {
+    TESLA_PW3: {
+      usableKwh: 13.5,
+      powerKw: 11.5
+    },
+    FRANKLIN: {
+      usableKwh: 13.6,
+      powerKw: 10
+    }
+  };
 
-const srpE28Rates = {
-  SUMMER:      { on: 0.1891, superOff: 0.0401 },
-  SUMMER_PEAK: { on: 0.4026, superOff: 0.0667 },
-  WINTER:      { on: 0.1514, superOff: 0.0438 }
-};
+  // ---- Program Rates ----
+  // Update if utilities change payouts
+  const PROGRAM_RATES = {
+    SRP_BATTERY_PARTNER: 360,   // $ per kW-year
+    APS_TESLA_VPP: 420          // $ per kW-year
+  };
 
-function money(n) {
-  return (Number.isFinite(n) ? n : 0)
-    .toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
-}
+  // ---- SRP E-28 Spread (peak minus off-peak) ----
+  const E28_SPREAD = {
+    SUMMER: 0.14,
+    SUMMER_PEAK: 0.22,
+    WINTER: 0.08
+  };
 
-function initBatteryCalc() {
-  const programEl = document.getElementById('program');
-  const modelEl = document.getElementById('batteryModel');
-  const qtyEl = document.getElementById('batteryQty');
-  const perfEl = document.getElementById('perf');
+  // ---- Elements ----
+  const programEl = document.getElementById("program");
+  const batteryEl = document.getElementById("batteryModel");
+  const qtyEl = document.getElementById("batteryQty");
+  const perfEl = document.getElementById("perf");
 
-  const usableEl = document.getElementById('usableKwh');
-  const powerEl = document.getElementById('powerKw');
+  const usableEl = document.getElementById("usableKwh");
+  const powerEl = document.getElementById("powerKw");
 
-  const monthlyEl = document.getElementById('monthlyCredit');
-  const arbMonthlyEl = document.getElementById('arbitrageMonthly');
+  const monthlyCreditEl = document.getElementById("monthlyCredit");
+  const arbitrageMonthlyEl = document.getElementById("arbitrageMonthly");
+  const creditNoteEl = document.getElementById("creditNote");
 
-  const seasonEl = document.getElementById('season');
-  const shiftEl = document.getElementById('shiftKwhDay');
-  const rteEl = document.getElementById('rte');
-  const arbDetailEl = document.getElementById('arbDetail');
+  const seasonEl = document.getElementById("season");
+  const shiftEl = document.getElementById("shiftKwhDay");
+  const rteEl = document.getElementById("rte");
+  const arbDetailEl = document.getElementById("arbDetail");
 
-  const calcBatteryBtn = document.getElementById('calcBatteryBtn');
-  const calcArbBtn = document.getElementById('calcArbBtn');
+  const calcBatteryBtn = document.getElementById("calcBatteryBtn");
+  const calcArbBtn = document.getElementById("calcArbBtn");
 
-  if (!programEl) return; // prevent errors if section removed later
+  if(!programEl) return; // safety
 
-  modelEl.innerHTML = Object.keys(batteryCatalog)
-    .map(name => `<option value="${name}">${name}</option>`)
-    .join('');
+  // ---- Populate battery dropdown ----
+  batteryEl.innerHTML = `
+    <option value="TESLA_PW3">Tesla Powerwall 3</option>
+    <option value="FRANKLIN">Franklin aPower</option>
+  `;
 
-  function syncBatteryFields() {
-    const b = batteryCatalog[modelEl.value];
-    const qty = Math.max(0, Number(qtyEl.value || 0));
-    usableEl.value = (b.usableKwh * qty).toFixed(1);
-    powerEl.value = (b.dischargeKw * qty).toFixed(1);
+  function money(n){
+    return "$" + (n || 0).toFixed(0);
   }
 
-  function calcProgramCredit() {
-    syncBatteryFields();
+  function updateSpecs(){
+    const model = batteryEl.value;
+    const qty = Number(qtyEl.value) || 1;
 
-    const b = batteryCatalog[modelEl.value];
-    const qty = Math.max(0, Number(qtyEl.value || 0));
-    const perf = Math.max(0, Math.min(1, Number(perfEl.value || 0)));
-    const p = programs[programEl.value];
+    const usable = BATTERIES[model].usableKwh * qty;
+    const power = BATTERIES[model].powerKw * qty;
 
-    const eligibleKw = b.dischargeKw * qty;
-    const annual = eligibleKw * p.annualDollarsPerKw * perf;
-    const monthly = annual / 12;
-
-    monthlyEl.textContent = money(monthly);
+    usableEl.value = usable.toFixed(1);
+    powerEl.value = power.toFixed(1);
   }
 
-  function calcArbitrage() {
-    const season = seasonEl.value;
-    const rates = srpE28Rates[season];
+  // ===============================
+  // PROGRAM CREDIT CALCULATION
+  // ===============================
+  function calculateProgramCredit(){
 
-    const shiftKwhDay = Math.max(0, Number(shiftEl.value || 0));
-    const rte = Math.max(0.01, Math.min(1, Number(rteEl.value || 0.9)));
+    const program = programEl.value;
+    const model = batteryEl.value;
+    const qty = Number(qtyEl.value) || 1;
+    const perf = Number(perfEl.value) || 1;
 
-    const chargedKwhDay = shiftKwhDay / rte;
-    const dailyValue = (shiftKwhDay * rates.on) - (chargedKwhDay * rates.superOff);
-    const monthlyValue = dailyValue * 30;
+    const totalKw = BATTERIES[model].powerKw * qty;
 
-    arbMonthlyEl.textContent = money(monthlyValue);
+    const annualCredit =
+      totalKw *
+      PROGRAM_RATES[program] *
+      perf;
 
-    if (arbDetailEl) {
-      arbDetailEl.textContent =
-        `Assumes charging in super off-peak and discharging into 6–9 p.m. on SRP E-28 using ${rte.toFixed(2)} efficiency.`;
+    const monthlyCredit = annualCredit / 12;
+
+    monthlyCreditEl.textContent = money(monthlyCredit);
+
+    if(program === "SRP_BATTERY_PARTNER"){
+      creditNoteEl.textContent =
+        "SRP pays based on committed kW during peak events.";
+    } else {
+      creditNoteEl.textContent =
+        "APS VPP pays based on enrolled kW capacity.";
     }
   }
 
-  modelEl.addEventListener('change', syncBatteryFields);
-  qtyEl.addEventListener('input', syncBatteryFields);
+  // ===============================
+  // SRP E-28 ARBITRAGE CALC
+  // ===============================
+  function calculateArbitrage(){
 
-  calcBatteryBtn.addEventListener('click', calcProgramCredit);
-  calcArbBtn.addEventListener('click', calcArbitrage);
+    const season = seasonEl.value;
+    const kwhPerDay = Number(shiftEl.value) || 0;
+    const rte = Number(rteEl.value) || 1;
 
-  syncBatteryFields();
-  calcProgramCredit();
-  calcArbitrage();
-}
+    const spread = E28_SPREAD[season];
 
-initBatteryCalc();
+    const effectiveKwh = kwhPerDay * rte;
+
+    const monthlyValue =
+      effectiveKwh *
+      spread *
+      30;
+
+    arbitrageMonthlyEl.textContent = money(monthlyValue);
+
+    arbDetailEl.textContent =
+      "Assumes off-peak charging and 6–9pm discharge under SRP E-28.";
+  }
+
+  // ---- Events ----
+  batteryEl.addEventListener("change", updateSpecs);
+  qtyEl.addEventListener("input", updateSpecs);
+  calcBatteryBtn.addEventListener("click", calculateProgramCredit);
+  calcArbBtn.addEventListener("click", calculateArbitrage);
+
+  updateSpecs();
+
+})();
   recalc();
 });
