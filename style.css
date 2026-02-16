@@ -635,3 +635,18 @@ input[type="number"]::placeholder{color:rgba(91,114,105,.7)}
     height: 76px;
   }
 }
+.hero__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hero__content {
+  max-width: 600px;
+}
+
+.brzy-logo {
+  max-width: 420px;
+  height: auto;
+  object-fit: contain;
+}
