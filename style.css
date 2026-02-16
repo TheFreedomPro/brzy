@@ -82,15 +82,16 @@ section{margin:0 0 var(--space-6)}
 .hero{
   color:#fff;
   background-image:
-    linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.55)),
-    url("./IMG_4892.jpeg");
-  background-size:cover;
-  background-position:center 28%;
-  background-repeat:no-repeat;
+    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.65)),
+    url("./IMG_4888.jpeg");
 
-  padding:64px 0 54px;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #000;
+
+  padding: 90px 0 80px;
 }
-
 .hero .container{
   display:grid;
   gap:18px;
