@@ -1,21 +1,32 @@
-const $ = (id) => document.getElementById(id);
+(() => {
+  "use strict";
+
+  const $ = (id) => document.getElementById(id);
 
   const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+
   const num = (v, fallback = 0) => {
     const n = Number(v);
     return Number.isFinite(n) ? n : fallback;
   };
 
   const money0 = (n) =>
-    (Number.isFinite(n) ? n : 0).toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+    (Number.isFinite(n) ? n : 0).toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 0
+    });
 
   const money2 = (n) =>
-    (Number.isFinite(n) ? n : 0).toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    (Number.isFinite(n) ? n : 0).toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
 
-  // annual r -> equivalent monthly rate (compounded)
   const annualToMonthly = (r) => (1 + r) ** (1 / 12) - 1;
 
-  // sum monthly series over years with annual escalator, compounded monthly
   function sumSeries(month0, annualR, years) {
     const m0 = clamp(num(month0, 0), 0, 1e9);
     const Y = clamp(parseInt(years || 25, 10), 1, 30);
@@ -31,7 +42,6 @@ const $ = (id) => document.getElementById(id);
     return total;
   }
 
-  // monthly value at end of selected year (Year N, month 12)
   function monthAtYear(month0, annualR, year) {
     const m0 = clamp(num(month0, 0), 0, 1e9);
     const y = clamp(parseInt(year || 1, 10), 1, 30);
@@ -65,8 +75,8 @@ const $ = (id) => document.getElementById(id);
       const solar = num(solarEl.value, 0);
       const years = clamp(parseInt(yearsEl.value || "25", 10), 1, 30);
 
-      const utilEsc = num(utilEscEl.value, 0.09);
-      const solarEsc = num(solarEscEl.value, 0);
+      const utilEsc = clamp(num(utilEscEl.value, 0.09), 0, 0.5);
+      const solarEsc = clamp(num(solarEscEl.value, 0), 0, 0.5);
 
       yearsDisplayEl.textContent = String(years);
 
@@ -102,16 +112,11 @@ const $ = (id) => document.getElementById(id);
     recalc();
   }
 
-  // battery models (editable)
   const BATTERIES = [
     { id: "PW3", label: "Tesla Powerwall 3", usableKwh: 13.5, powerKw: 11.5 },
     { id: "FRANKLIN", label: "FranklinWH (aPower)", usableKwh: 13.6, powerKw: 5.0 }
   ];
 
-  // program configs
-  // APS Tesla VPP: Tesla publishes “up to $400 per home backup battery each year” (cap-style estimate).
-  // APS kW-based: some AZ VPP coverage references incentives up to $110/kW-year (kW-based estimate).
-  // SRP Battery Partner: $55 per kW per season, 2 seasons/year = $110 per kW-year.
   const PROGRAMS = {
     APS_TESLA_VPP: {
       label: "APS Tesla Virtual Power Plant",
@@ -125,11 +130,11 @@ const $ = (id) => document.getElementById(id);
       ratePerKwYear: 110,
       capPerBatteryYear: null,
       note:
-        "APS kW-based estimate: uses $110 per kW-year style assumption seen in AZ VPP coverage. Actual program payouts vary by events/performance."
+        "APS kW-based estimate: uses $110 per kW-year style assumption. Actual program payouts vary by events/performance."
     },
     SRP_BATTERY_PARTNER: {
       label: "SRP Battery Partner",
-      ratePerKwYear: 55 * 2,
+      ratePerKwYear: 110,
       capPerBatteryYear: null,
       note:
         "SRP Battery Partner: $55 per kW per season, 2 seasons/year (annualized here). Actual is based on measured event performance vs baseline."
