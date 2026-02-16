@@ -118,7 +118,7 @@
   const PROGRAMS = {
     APS_TESLA_VPP: {
       label: "APS Tesla VPP",
-      capPerBatteryYear: 400,
+      capPerBatteryYear: 800,
       note:
         "APS Tesla VPP is marketed as up to about $400 per battery per year. This estimator scales toward that cap based on avg event kW and performance."
     },
