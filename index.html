@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+<title> AIDAN LEAVITT FREEDOM PRO </title>
+  <meta property="og:title" content="Aidan Leavitt | Freedom Pro" />
+<meta property="og:description" content="Quick Solar Savings Calculator + proof, map, and partners." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://thefreedompro.github.io/lowes/" />
+<meta property="og:image" content="https://thefreedompro.github.io/lowes/FullSizeRender.jpeg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://thefreedompro.github.io/lowes/FullSizeRender.jpeg" />
+
+<link rel="stylesheet" href="style.css?v=2" />
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+
+    <!-- ===== ABOUT US (compact chips) ===== -->
+    <section class="links card" id="more-links">
+      <h2 class="section-title">ABOUT US</h2>
+      <p class="section-kicker">Independent coverage, rankings, and public profiles.</p>
+      <ul class="link-chips">
+        <li><a href="https://www.google.com/search?q=aidan%20leavitt%20new%20hampshire" target="_blank" rel="noopener">AIDAN LEAVITT — Google</a></li>
+        <li><a href="https://www.google.com/search?client=safari&hl=en-us&q=freedom+forever+lewiston+reviews" target="_blank" rel="noopener">FREEDOM FOREVER (EAST) </a></li>
+        <li><a href="https://www.google.com/search?q=freedom+forever+arizona&hl=en-us" target="_blank" rel="noopener">FREEDOM FOREVER (WEST) </a></li>
+        <li><a href="https://www.prnewswire.com/news-releases/freedom-forever-ranked-no-1-residential-solar-contractor-on-the-2024-top-solar-contractors-list-302265064.html" target="_blank" rel="noopener"> TOP SOLAR INSTALLERS</a></li>
+        <li><a href="https://www.solarpowerworldonline.com/2024-top-solar-installers/" target="_blank" rel="noopener">TOP SOLAR CONTRACTORS </a></li>
+      </ul>
+    </section>
+  <header class="hero">
+    <div class="container hero__inner">
+      <div class="hero__text">
+        <h1 class="title"> Calculate Your Savings</h1>
+        <p class="subtitle">See how switching to solar can reduce your electricity costs over time.</p>
+      </div>
+<div class="hero__logos">
+  <img src="eversource.png.jpg" alt="Eversource Energy" class="utility-logo" />
+  <img src="cmp.png" alt="Central Maine Power" class="utility-logo" />
+  <img src="versant.png" alt="Versant Power" class="utility-logo" />
+</div>
+    </div>
+  </header>
+
+  <main class="container">
+
+      <!-- ===== Top contact strip ===== -->
+  <div class="phone-header">
+    <div class="phone-text">
+      <p class="phone-number">
+        <a href="sms:16037679594?&body=SOLAR">QUESTIONS?</a>
+        <p style="font-size:16px; font-weight:700; color:#157a5b; margin:4px 0 0 0;">
+  ⬆️ Click Questions? above to see
+</p>
+      </p>
+    </div>
+  </div>
+
+    <!-- ===== Calculator ===== -->
+    <section class="card">
+      <form id="calcForm" class="form-grid" onsubmit="return false;">
+        <div class="field">
+          <label for="bill">Monthly utility bill ($)</label>
+          <input id="bill" type="number" min="0" step="1" placeholder="e.g., 180" inputmode="decimal" />
+        </div>
+
+        <div class="field">
+          <label for="solarPayment">Monthly solar payment ($)</label>
+          <input id="solarPayment" type="number" min="0" step="1" placeholder="e.g., 135" inputmode="decimal" />
+        </div>
+
+        <div class="field">
+          <label for="yearsRange">Timeline (years): <strong id="yearsDisplay">25</strong></label>
+          <div class="range-wrap">
+            <input id="yearsRange" type="range" min="1" max="30" value="25" />
+          </div>
+        </div>
+
+        <!-- Hidden, fixed 9% annual utility increase -->
+        <input id="utilityEsc" type="hidden" value="0.09" />
+
+        <div class="field span-2">
+          <label for="solarEsc">Solar escalator (PPA/lease rate increase)</label>
+          <select id="solarEsc">
+            <option value="0.0359" selected>3.59% per year</option>
+            <option value="0.0299">2.99% per year</option>
+            <option value="0.0199">1.99% per year</option>
+            <option value="0">(fixed) per year</option>
+          </select>
+        </div>
+
+        <div class="actions span-3">
+          <button id="runBtn" class="btn" type="button">Calculate</button>
+        </div>
+      </form>
+
+      <!-- Totals -->
+      <div class="totals">
+        <div class="total card-lite">
+          <div class="total-label">Total Utility Cost</div>
+          <div id="utilTotal" class="total-value">$0</div>
+        </div>
+        <div class="total card-lite">
+          <div class="total-label">Total Solar Cost</div>
+          <div id="solarTotal" class="total-value">$0</div>
+        </div>
+        <div class="total card-lite">
+          <div class="total-label">Total Utility Bill Savings</div>
+          <div id="savings" class="total-value">$0</div>
+        </div>
+      </div>
+
+      <!-- Yearly Snapshot -->
+      <article class="snapshot card-lite">
+        <header class="snap-header">
+          <h2 class="snap-year">Year <span id="snapYear">25</span></h2>
+          <span class="snap-tag">Snapshot</span>
+        </header>
+        <div class="snap-rows">
+          <div class="row"><span class="label">Monthly utility</span><span id="selMonthlyUtility" class="value">$0.00</span></div>
+          <div class="row"><span class="label">Monthly solar</span><span id="selMonthlySolar" class="value">$0.00</span></div>
+          <div class="row"><span class="label">Monthly savings</span><span id="selMonthlySavings" class="value">$0.00</span></div>
+          <div class="row"><span class="label">Annual savings</span><span id="selAnnualSavings" class="value">$0.00</span></div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ===== Lowes exclusive way to own solar and still get tax credit (AURA OWNERSHIP PPA) ===== -->
+
+<!-- ===== Aura program (5-year PPA to ownership) ===== -->
+<section id="ppa" class="card programs">
+  <h2 class="section-title">WELCOME TO THE AURA CLUB</h2>
+<p class="section-subtitle">
+  The only 5-YEAR Purchase Power Agreement To Own
+</p>
+
+    Aura starts as a 5-year power purchase agreement (PPA). You pay for the solar power your roof produces,
+    typically at a lower rate than your utility. After 5 years, the system transitions so you can own it.
+  </p>
+
+  <ul class="bullets">
+    <li>Lower upfront cost compared to traditional ownership</li>
+    <li>Short 5-year term designed to move you into ownership</li>
+    <li>Program structure applies available commercial-style incentives on the backend</li>
+    <li>Target benefit up to ~35% in incentives when you qualify</li>
+  </ul>
+
+  <p class="fine">
+    Incentives and eligibility vary by home, utility, and program requirements. This is not tax advice.
+  </p>
+
+  <div class="cta-row">
+   <div class="phone-text">
+      <p class="phone-number">
+        <a href="sms:16037679594?&body=WOULD I QUALIFY FOR AURA">CLICK TO ASK MORE</a>
+        <p style="font-size:16px; font-weight:700; color:#157a5b; margin:4px 0 0 0;">
+  </div>
+</section>
+
+    <!-- ===== Reviews collage ===== -->
+    <section class="reviews">
+      <h2 class="section-title">What local homeowners are saying</h2>
+      <p class="section-kicker">Independent public feedback from real customers.</p>
+      <div class="reviews-grid">
+
+        <figure class="rev"><img src="IMG_6307.jpeg"   alt="Freedom Forever" /></figure>
+        <figure class="rev"><img src="IMG_6306.jpeg"   alt="Freedom Forever" /></figure>
+        <figure class="rev"><img src="IMG_6305.jpeg"   alt="Freedom Forever" /></figure>
+        <figure class="rev"><img src="IMG_6304.jpeg"   alt="Freedom Forever" /></figure>
+        <figure class="rev"><img src="IMG_6303.jpeg"   alt="Freedom Forever" /></figure>
+        <figure class="rev"><img src="review_brad.jpg"    alt="Brad review" /></figure>
+        <figure class="rev"><img src="review_tammy.jpg"   alt="Tammy review" /></figure>
+        <figure class="rev"><img src="review_juan.jpg"    alt="Juan review" /></figure>
+        <figure class="rev"><img src="review_harvey.jpg"  alt="Harvey review" /></figure>
+        <figure class="rev"><img src="review_cilvia.jpg"  alt="Cilvia review" /></figure>
+        <figure class="rev"><img src="review_carolyn.jpg" alt="Carolyn review" /></figure>
+        <figure class="rev"><img src="review_terri.jpg"   alt="Terri review" /></figure>
+      </div>
+    </section>
+    
+    <!-- end chart-card -->
+
+<!-- ===== Slides ===== -->
+<section class="slides">
+  <img src="pdf_page_2.png"  alt="Company overview" loading="lazy" />
+  <img src="IMG_1234.jpg"    alt="Sponsors" loading="lazy" />
+  <img src="pdf_page_4.png"  alt="Partners" loading="lazy" />
+  <img src="pdf_page_3.png"  alt="Installation map" loading="lazy" />
+  <img src="pdf_page_17.png" alt="FAQ" loading="lazy" />
+  <img src="IMG_1359.jpeg"   alt="Client install" loading="lazy" />
+  <img src="IMG_6212.jpeg"   alt="Electrical work" loading="lazy" />
+  <img src="pdf_page_18.png" alt="Solar in snow" loading="lazy" />
+  <img src="IMPORTANT_DETAILS.PNG" alt="Program details summary" loading="lazy" />
+</section>
+
+</main>
+
+<!-- ===== Scripts ===== -->
+<script src="script.js" defer></script>
+
+<script>
+/* ---------- Chart loader that won't fail silently ---------- */
+(function() {
+  const labels = [2000, 2005, 2010, 2015, 2020, 2021, 2022, 2023, 2024];
+  const values = [8.3, 9.1, 11.7, 12.7, 13.1, 13.7, 15.1, 15.9, 16.2];
+
+  // Fill the fallback table & notes immediately
+  (function seedFallback(){
+    const tb = document.getElementById('rateTableBody');
+    if (tb) tb.innerHTML = labels.map((y,i)=>`<tr><td>${y}</td><td>${values[i].toFixed(1)}</td></tr>`).join('');
+    const notes = document.getElementById('rateNotes');
+    if (notes) notes.textContent = 'Source: US EIA national average residential electricity price. Most recent year shown.';
+  })();
+
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = src; s.async = true;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  async function ensureChartJS() {
+    if (window.Chart) return;
+    try {
+      await loadScript('https://cdn.jsdelivr.net/npm/chart.js');
+    } catch(e) {
+      // one quick retry (temporary network hiccup)
+      await new Promise(r => setTimeout(r, 400));
+      await loadScript('https://cdn.jsdelivr.net/npm/chart.js');
+    }
+  }
+
+  function renderChart() {
+    const wrap = document.getElementById('rateChartWrap');
+    const canvas = document.getElementById('rateChart');
+    if (!canvas || !canvas.getContext) return;
+
+    const ctx = canvas.getContext('2d');
+    if (window._rateChart) window._rateChart.destroy();
+
+    window._rateChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'US Avg Residential (¢/kWh)',
+          data: values,
+          borderColor: '#2ecc71',
+          backgroundColor: 'rgba(46,204,113,.18)',
+          fill: true,
+          tension: 0.35,
+          pointRadius: 3.5,
+          pointHoverRadius: 6,
+          borderWidth: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: { label: c => `${c.parsed.y.toFixed(1)} ¢/kWh` }
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: 'Year' }, grid: { display: false } },
+          y: {
+            title: { display: true, text: '¢/kWh' },
+            suggestedMin: Math.max(0, Math.min(...values) - 2),
+            suggestedMax: Math.max(...values) + 2,
+            ticks: { callback: v => v + '¢' }
+          }
+        }
+      }
+    });
+
+    if (wrap) wrap.setAttribute('aria-busy', 'false');
+  }
+
+  // Only load Chart.js when the chart is near viewport (reduces jank)
+  const target = document.getElementById('rates');
+  if (!target) return;
+
+  const start = async () => { await ensureChartJS(); renderChart(); };
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some(e => e.isIntersecting)) { io.disconnect(); start(); }
+    }, { rootMargin: '200px' });
+    io.observe(target);
+  } else {
+    // older browsers: just run after load
+    window.addEventListener('load', start, { once: true });
+  }
+})();
+</script>
+
+</body>
+</html>
+
