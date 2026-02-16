@@ -79,23 +79,51 @@ section{margin:0 0 var(--space-6)}
 }
 
 /* hero */
-.hero {
-  position: relative;
-  min-height: 420px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: #ffffff;
-  overflow: hidden;
+.hero{
+  position:relative;
+  min-height:420px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:#ffffff;
+  overflow:hidden;
+  padding:64px 0 56px; /* add padding since you removed it earlier */
 
-  background-image:
-    linear-gradient(rgba(0,0,0,0.08), rgba(0,0,0,0.12)),
-    url("./IMG_4888.jpeg");
+  background-color:#0a0a0a; /* fallback */
+  background-image:url("./IMG_4888.jpeg");
+  background-size:cover;
+  background-position:center 18%;
+  background-repeat:no-repeat;
+}
 
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.06); /* tiny wash so text stays readable */
+  z-index:0;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+
+  background-image:url("./IMG_4888.jpeg");
+  background-repeat:no-repeat;
+  background-position:center 18%;
+  background-size:cover;
+
+  opacity:0.10;            /* THIS is the “barely in the background” control */
+  filter:grayscale(100%);  /* makes it feel like a watermark */
+  z-index:0;
+  pointer-events:none;
+}
+
+.hero .container{
+  position:relative;
+  z-index:1; /* keeps your text + logos above the watermark */
 }
 .hero .container{
   display:grid;
