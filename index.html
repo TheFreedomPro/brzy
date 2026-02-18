@@ -173,7 +173,7 @@
         <div class="field">
           <label for="solarPayment">Monthly solar + battery payment ($)</label>
           <input id="solarPayment" type="number" min="0" step="1" placeholder="auto from panels + batteries" inputmode="decimal" />
-          <div class="hint">Auto-fills from panels ($10/mo each) + batteries ($66/mo each). You can still override it.</div>
+          <div class="hint">Auto-fills from panel + battery counts. You can still override it.</div>
         </div>
 
         <div class="field">
@@ -196,12 +196,12 @@
         <div class="field span-3">
           <div class="pricing-grid">
             <div class="field" style="margin:0;">
-              <label for="panelQty">Panels (adds $10/mo each)</label>
+              <label for="panelQty">Panel count</label>
               <input id="panelQty" type="number" min="0" step="1" value="0" inputmode="numeric" />
             </div>
 
             <div class="field" style="margin:0;">
-              <label for="priceBatteryQty">Batteries (adds $66/mo each)</label>
+              <label for="priceBatteryQty">Battery count</label>
               <input id="priceBatteryQty" type="number" min="0" step="1" value="0" inputmode="numeric" />
             </div>
 
@@ -240,9 +240,7 @@
 
         <div class="snap-rows">
           <div class="row"><span class="label">Monthly utility (est.)</span><span id="selMonthlyUtility" class="value">$0.00</span></div>
-          <div class="row"><span class="label">Monthly solar (est.)</span><span id="selMonthlySolar" class="value">$0.00</span></div>
-          <div class="row"><span class="label">Monthly savings (est.)</span><span id="selMonthlySavings" class="value">$0.00</span></div>
-          <div class="row"><span class="label">Annual savings (est.)</span><span id="selAnnualSavings" class="value">$0.00</span></div>
+          <div class="row"><span class="label">Annual utility (est.)</span><span id="selAnnualUtility" class="value">$0.00</span></div>
         </div>
       </article>
     </section>
@@ -388,9 +386,7 @@
 
       const snapYearEl = $("snapYear");
       const selMonthlyUtilityEl = $("selMonthlyUtility");
-      const selMonthlySolarEl = $("selMonthlySolar");
-      const selMonthlySavingsEl = $("selMonthlySavings");
-      const selAnnualSavingsEl = $("selAnnualSavings");
+      const selAnnualUtilityEl = $("selAnnualUtility");
 
       function money0(n) {
         const x = Number.isFinite(n) ? n : 0;
@@ -429,46 +425,35 @@
         const { bill, years, utilEsc, solarEsc, solarStart } = getInputs();
         const utilAnnual = [];
         const solarAnnual = [];
-        const savingsAnnual = [];
 
         for (let y = 1; y <= years; y++) {
           const utilMonthlyY = bill * Math.pow(1 + utilEsc, y - 1);
           const solarMonthlyY = solarStart * Math.pow(1 + solarEsc, y - 1);
 
-          const u = utilMonthlyY * 12;
-          const s = solarMonthlyY * 12;
-          const save = u - s;
-
-          utilAnnual.push(u);
-          solarAnnual.push(s);
-          savingsAnnual.push(save);
+          utilAnnual.push(utilMonthlyY * 12);
+          solarAnnual.push(solarMonthlyY * 12);
         }
 
         const utilTotal = utilAnnual.reduce((a, b) => a + b, 0);
         const solarTotal = solarAnnual.reduce((a, b) => a + b, 0);
         const savingsTotal = utilTotal - solarTotal;
 
-        return { utilAnnual, solarAnnual, savingsAnnual, utilTotal, savingsTotal };
+        return { utilAnnual, solarAnnual, utilTotal, savingsTotal };
       }
 
       function render() {
         yearsDisplayEl.textContent = yearsEl.value;
         snapYearEl.textContent = yearsEl.value;
 
-        const { utilAnnual, solarAnnual, savingsAnnual, utilTotal, savingsTotal } = calcSeries();
+        const { utilAnnual, solarAnnual, utilTotal, savingsTotal } = calcSeries();
         utilTotalEl.textContent = money0(utilTotal);
         savingsTotalEl.textContent = money0(savingsTotal);
 
         const years = utilAnnual.length;
         const utilMonthlyY = utilAnnual[years - 1] / 12;
-        const solarMonthlyY = solarAnnual[years - 1] / 12;
-        const savingsMonthlyY = savingsAnnual[years - 1] / 12;
-        const savingsAnnualY = savingsAnnual[years - 1];
 
         selMonthlyUtilityEl.textContent = money2(utilMonthlyY);
-        selMonthlySolarEl.textContent = money2(solarMonthlyY);
-        selMonthlySavingsEl.textContent = money2(savingsMonthlyY);
-        selAnnualSavingsEl.textContent = money2(savingsAnnualY);
+        selAnnualUtilityEl.textContent = money2(utilAnnual[years - 1]);
 
         updateNetPayment();
       }
