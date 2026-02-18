@@ -16,61 +16,34 @@
   <meta name="twitter:image" content="https://thefreedompro.github.io/BRZY/FullSizeRender.jpeg" />
 
   <link rel="stylesheet" href="style.css?v=3" />
-.rep-button-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 14px;
-  margin-top: 18px;
-}
 
-.rep-btn {
-  display: block;
-  text-align: center;
-  padding: 14px 18px;
-  border-radius: 10px;
-  font-weight: 600;
-  text-decoration: none;
-  background: #f1f5f4;
-  color: #1f3c35;
-  transition: all 0.2s ease;
-  border: 1px solid #e3e7e6;
-}
-
-.rep-btn:hover {
-  background: #157a5b;
-  color: #ffffff;
-  transform: translateY(-2px);
-}
-
-.rep-btn.primary {
-  background: #157a5b;
-  color: #ffffff;
-}
-
-.rep-btn.primary:hover {
-  background: #0f5f46;
-}
   <style>
-    /* forces the 2 tiles to sit evenly side-by-side (desktop), stack on mobile */
-    .totals.totals--2{grid-template-columns:repeat(2,1fr)}
-    @media (max-width:860px){.totals.totals--2{grid-template-columns:1fr}}
-    /* center ABOUT US block */
-    #more-links, #more-links .section-title, #more-links .section-kicker{ text-align:center }
-    #more-links .link-chips{ justify-content:center }
-    /* keep BRZY logo clean on right, drop under on mobile */
-    .hero__inner{display:flex;align-items:center;justify-content:space-between;gap:18px}
-    .hero__content{max-width:640px}
-    .brzy-logo{max-width:420px;height:auto;object-fit:contain}
-    @media (max-width:600px){
-      .hero__inner{flex-direction:column;align-items:center;text-align:center}
-      .hero__content{max-width:100%}
-      .brzy-logo{max-width:85%;margin:10px auto 0}
-      .hero__logos{justify-content:center}
+    /* keep totals cards evenly split on desktop, stack on mobile */
+    .totals.totals--2 { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+    @media (max-width: 860px){ .totals.totals--2{ grid-template-columns:1fr; } }
+
+    /* rep resources buttons */
+    .rep-button-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:14px; margin-top:18px; }
+    .rep-btn{
+      display:block;
+      text-align:center;
+      padding:14px 18px;
+      border-radius:999px;
+      font-weight:700;
+      text-decoration:none;
+      background:#eef4ff;
+      color:#1f3c55;
+      border:1px solid rgba(31,60,85,.12);
+      transition:transform .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
     }
+    .rep-btn:hover{ transform:translateY(-2px); background:#157a5b; color:#fff; border-color:transparent; }
+
     /* responsive jotform embed */
-    .jotform-wrap{position:relative;width:100%;padding-top:140%}
-    .jotform-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-    @media (min-width:860px){.jotform-wrap{padding-top:95%}}
+    .jotform-wrap{ position:relative; width:100%; padding-top:140%; border-radius:16px; overflow:hidden; border:0; }
+    .jotform-wrap iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+    @media (min-width: 860px){ .jotform-wrap{ padding-top:95%; } }
   </style>
 </head>
 
@@ -78,7 +51,6 @@
 
   <header class="hero">
     <div class="container">
-
       <div class="hero__inner">
         <div class="hero__content">
           <h1 class="title">Calculate Your Savings</h1>
@@ -92,7 +64,6 @@
         <img src="IMG_4883.jpeg" alt="SRP" class="utility-logo" />
         <img src="IMG_4884.jpeg" alt="APS" class="utility-logo" />
       </div>
-
     </div>
   </header>
 
@@ -106,30 +77,29 @@
       <li><a href="https://www.srpnet.com/energy-savings-rebates/home/residential-solar/battery-partner" target="_blank" rel="noopener">SRP PARTNER PROGRAM</a></li>
     </ul>
   </section>
-</section>  <!-- end ABOUT US -->
-  
+
   <section class="links card" id="rep-links">
-  <h2 class="section-title">REP RESOURCES</h2>
-  <p class="section-kicker">Direct access for BRZY reps.</p>
+    <h2 class="section-title">REP RESOURCES</h2>
+    <p class="section-kicker">Direct access for BRZY reps.</p>
 
-  <div class="rep-button-grid">
-    <a href="https://brzynrg.com" target="_blank" class="rep-btn">BRZY NRG</a>
-    <a href="https://brzy.university" target="_blank" class="rep-btn">BRZY UNIVERSITY</a>
-    <a href="https://brzy.university/recruiting" target="_blank" class="rep-btn">BRZY RECRUITING</a>
+    <div class="rep-button-grid">
+      <a class="rep-btn" href="https://brzynrg.com" target="_blank" rel="noopener">BRZY NRG</a>
+      <a class="rep-btn" href="https://brzy.university" target="_blank" rel="noopener">BRZY UNIVERSITY</a>
+      <a class="rep-btn" href="https://brzy.university/recruiting" target="_blank" rel="noopener">BRZY RECRUITING</a>
+      <a class="rep-btn" href="https://phx.gosolo.io/login" target="_blank" rel="noopener">GOSOLO</a>
+      <a class="rep-btn" href="https://aurorasolar.com" target="_blank" rel="noopener">AURORA</a>
+    </div>
+  </section>
 
-    <a href="https://phx.gosolo.io/login" target="_blank" class="rep-btn primary">GOSOLO</a>
-    <a href="https://aurorasolar.com" target="_blank" class="rep-btn primary">AURORA</a>
-  </div>
-</section>
   <main class="container">
 
     <div class="phone-header">
       <div class="phone-text">
         <p class="phone-number">
-          <a href="sms:16037679594?&body=SOLAR">CLICK HERE FOR QUESTIONS!</a>
+          <a href="sms:16037679594?&body=SOLAR">CLICK HERE FOR QUESTIONS?</a>
         </p>
-        <p style="font-size:16px;font-weight:700;color:#157a5b;margin:4px 0 0 0;">
-          ⬆️ Click above
+        <p style="font-size:16px; font-weight:700; color:#157a5b; margin:4px 0 0 0;">
+          ⬆️ Click Questions? above to see
         </p>
       </div>
     </div>
@@ -142,6 +112,11 @@
         </div>
 
         <div class="field">
+          <label for="solarPayment">Monthly Battery + solar payment ($)</label>
+          <input id="solarPayment" type="number" min="0" step="1" placeholder="e.g., 135" inputmode="decimal" />
+        </div>
+
+        <div class="field">
           <label for="yearsRange">Timeline (years): <span id="yearsDisplay">25</span></label>
           <div class="range-wrap">
             <input id="yearsRange" type="range" min="1" max="30" value="25" />
@@ -150,16 +125,32 @@
 
         <input id="utilityEsc" type="hidden" value="0.09" />
 
+        <div class="field span-2">
+          <label for="solarEsc">Battery escalator (PPA/lease rate increase)</label>
+          <select id="solarEsc">
+            <option value="0.0199" selected>1.99% per year</option>
+            <option value="0.0299">2.99% per year</option>
+            <option value="0.0349">3.949% per year</option>
+            <option value="0">0% (fixed)</option>
+          </select>
+        </div>
+
         <div class="actions span-3">
           <button id="runBtn" class="btn" type="button">Calculate</button>
         </div>
       </form>
 
-      <div class="totals totals--1">
+      <div class="totals totals--2">
         <div class="total card-lite">
           <div class="total-label">Total Utility Cost</div>
           <div id="utilTotal" class="total-value">$0</div>
         </div>
+
+        <div class="total card-lite">
+          <div class="total-label">Estimated Utility Monthly (Year <span id="snapYearMini">25</span>)</div>
+          <div id="utilMonthlyAtYear" class="total-value">$0</div>
+        </div>
+      </div>
 
       <article class="snapshot card-lite">
         <header class="snap-header">
@@ -169,17 +160,12 @@
 
         <div class="snap-rows">
           <div class="row"><span class="label">Monthly utility</span><span id="selMonthlyUtility" class="value">$0.00</span></div>
+          <div class="row"><span class="label">Annual utility</span><span id="selAnnualUtility" class="value">$0.00</span></div>
         </div>
       </article>
     </section>
 
     <section class="card" id="battery-credit">
-      <h2 class="section-title">Battery Program Credit (APS or SRP)</h2>
-      <p class="section-kicker">
-        This is an estimate based on event performance (kW delivered during events), not monthly kWh usage.
-        If your bill shows peak demand (kW), enter it to personalize the estimate.
-      </p>
-
       <div class="totals totals--2" style="margin-top:16px;">
         <div class="total card-lite">
           <div class="total-label">Estimated monthly credit</div>
@@ -194,12 +180,18 @@
 
       <p id="creditNote" class="section-kicker" style="margin-top:12px;"></p>
 
+      <h2 class="section-title">Battery Program Credit (APS or SRP)</h2>
+      <p class="section-kicker">
+        This is an estimate based on event performance (kW delivered during events), not monthly kWh usage.
+        If your bill shows peak demand (kW), enter it to personalize the estimate.
+      </p>
+
       <div class="form-grid" style="margin-top:14px;">
         <div class="field">
           <label for="program">Utility / Program</label>
           <select id="program">
-            <option value="APS_TESLA_VPP" selected>APS Tesla VPP (annual cap model)</option>
-            <option value="SRP_BATTERY_PARTNER">SRP Battery Partner (kW per season)</option>
+            <option value="APS_TESLA_VPP">APS Tesla VPP (annual cap model)</option>
+            <option value="SRP_BATTERY_PARTNER" selected>SRP Battery Partner (kW per season)</option>
           </select>
         </div>
 
@@ -228,7 +220,7 @@
 
         <div class="field">
           <label for="commitKw">Avg event kW per battery (editable)</label>
-          <input id="commitKw" type="number" min="0" step="0.1" value="4.5" inputmode="decimal" />
+          <input id="commitKw" type="number" min="0" step="0.1" value="13.5" inputmode="decimal" />
         </div>
 
         <div class="field">
@@ -283,7 +275,7 @@
       <div class="jotform-wrap">
         <iframe
           src="https://form.jotform.com/233164587079062"
-          title="Jotform"
+          title="Solar Intake Form"
           loading="lazy"
           allow="geolocation; microphone; camera"
         ></iframe>
@@ -292,6 +284,202 @@
 
   </main>
 
-  <script src="script.js?v=3" defer></script>
+  <script>
+    (function () {
+      const $ = (id) => document.getElementById(id);
+
+      const billEl = $("bill");
+      const solarPaymentEl = $("solarPayment"); // kept for your workflow, not displayed in totals
+      const yearsRangeEl = $("yearsRange");
+      const yearsDisplayEl = $("yearsDisplay");
+      const snapYearEl = $("snapYear");
+      const snapYearMiniEl = $("snapYearMini");
+      const utilityEscEl = $("utilityEsc");
+      const runBtn = $("runBtn");
+
+      const utilTotalEl = $("utilTotal");
+      const utilMonthlyAtYearEl = $("utilMonthlyAtYear");
+      const selMonthlyUtilityEl = $("selMonthlyUtility");
+      const selAnnualUtilityEl = $("selAnnualUtility");
+
+      // Battery credit elements
+      const programEl = $("program");
+      const batteryModelEl = $("batteryModel");
+      const batteryQtyEl = $("batteryQty");
+      const peakDemandKwEl = $("peakDemandKw");
+      const autoFromDemandEl = $("autoFromDemand");
+      const commitKwEl = $("commitKw");
+      const perfEl = $("perf");
+      const usableKwhEl = $("usableKwh");
+      const powerKwEl = $("powerKw");
+      const creditedKwEl = $("creditedKw");
+      const calcBatteryBtn = $("calcBatteryBtn");
+      const monthlyCreditEl = $("monthlyCredit");
+      const annualCreditEl = $("annualCredit");
+      const creditNoteEl = $("creditNote");
+
+      const money0 = (n) => {
+        const v = Number.isFinite(n) ? n : 0;
+        return v.toLocaleString(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+      };
+      const money2 = (n) => {
+        const v = Number.isFinite(n) ? n : 0;
+        return v.toLocaleString(undefined, { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      };
+      const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+
+      function updateYearsUI() {
+        const y = Number(yearsRangeEl.value || 25);
+        yearsDisplayEl.textContent = String(y);
+        snapYearEl.textContent = String(y);
+        snapYearMiniEl.textContent = String(y);
+      }
+
+      function calcUtility() {
+        const bill = parseFloat(billEl.value || "0");
+        const years = Number(yearsRangeEl.value || 25);
+        const esc = parseFloat(utilityEscEl.value || "0.09");
+
+        // total utility cost over years with annual escalation
+        let total = 0;
+        for (let i = 0; i < years; i++) {
+          const yearFactor = Math.pow(1 + esc, i);
+          total += bill * 12 * yearFactor;
+        }
+
+        const snapMonthly = bill * Math.pow(1 + esc, years - 1);
+        const snapAnnual = snapMonthly * 12;
+
+        utilTotalEl.textContent = money0(total);
+        utilMonthlyAtYearEl.textContent = money0(snapMonthly);
+        selMonthlyUtilityEl.textContent = money2(snapMonthly);
+        selAnnualUtilityEl.textContent = money2(snapAnnual);
+      }
+
+      // Battery models + program parameters
+      const batteryModels = [
+        { id: "PW3", label: "Tesla Powerwall 3", usableKwh: 13.5, powerKw: 11.5, note: "Typical values" },
+        { id: "PW2", label: "Tesla Powerwall 2", usableKwh: 13.5, powerKw: 5.0, note: "Typical values" },
+        { id: "ENCHARGE10", label: "Enphase IQ Battery 10T", usableKwh: 10.0, powerKw: 3.84, note: "Typical values" }
+      ];
+
+      const programs = {
+        SRP_BATTERY_PARTNER: {
+          label: "SRP Battery Partner",
+          kind: "srp",
+          dollarsPerKwPerSeason: 55,
+          seasonsPerYear: 2,
+          note: "SRP Battery Partner is $55 per kW per season, 2 seasons per year. Actual payouts depend on events and performance."
+        },
+        APS_TESLA_VPP: {
+          label: "APS Tesla VPP",
+          kind: "aps_cap",
+          capPerBatteryYear: 1200, // model: annual cap per battery, scaled by delivered power
+          note: "APS Tesla VPP estimate uses an annual cap model scaled by credited kW and performance."
+        }
+      };
+
+      function fillBatteryModels() {
+        batteryModelEl.innerHTML = "";
+        batteryModels.forEach((b) => {
+          const opt = document.createElement("option");
+          opt.value = b.id;
+          opt.textContent = b.label;
+          batteryModelEl.appendChild(opt);
+        });
+        batteryModelEl.value = "PW3";
+      }
+
+      function getSelectedBattery() {
+        return batteryModels.find((b) => b.id === batteryModelEl.value) || batteryModels[0];
+      }
+
+      function setDerivedBatteryFields() {
+        const b = getSelectedBattery();
+        const qty = Math.max(1, parseInt(batteryQtyEl.value || "1", 10));
+        usableKwhEl.value = (b.usableKwh * qty).toFixed(1);
+        powerKwEl.value = (b.powerKw * qty).toFixed(2);
+      }
+
+      function maybeAutoCommitKw() {
+        const b = getSelectedBattery();
+        const qty = Math.max(1, parseInt(batteryQtyEl.value || "1", 10));
+        const maxPowerTotal = b.powerKw * qty;
+
+        const autoOn = String(autoFromDemandEl.value) === "1";
+        const peak = parseFloat(peakDemandKwEl.value || "");
+
+        if (autoOn && Number.isFinite(peak) && peak > 0) {
+          // simple heuristic: target ~90% of peak, capped by battery power
+          const perBattery = clamp((peak * 0.9) / qty, 0, b.powerKw);
+          commitKwEl.value = perBattery.toFixed(1);
+        } else {
+          // keep whatever the user typed
+        }
+
+        // update credited field preview
+        const perf = clamp(parseFloat(perfEl.value || "0.85"), 0, 1);
+        const commitPerBattery = clamp(parseFloat(commitKwEl.value || "0"), 0, b.powerKw);
+        const credited = commitPerBattery * qty * perf;
+        creditedKwEl.value = credited.toFixed(2);
+      }
+
+      function calcCredit() {
+        const p = programs[programEl.value] || programs.SRP_BATTERY_PARTNER;
+        const b = getSelectedBattery();
+        const qty = Math.max(1, parseInt(batteryQtyEl.value || "1", 10));
+        const perf = clamp(parseFloat(perfEl.value || "0.85"), 0, 1);
+
+        setDerivedBatteryFields();
+
+        const commitPerBattery = clamp(parseFloat(commitKwEl.value || "0"), 0, b.powerKw);
+        const maxPowerTotal = b.powerKw * qty;
+
+        const credited = clamp(commitPerBattery * qty * perf, 0, maxPowerTotal * perf);
+        creditedKwEl.value = credited.toFixed(2);
+
+        let annual = 0;
+
+        if (p.kind === "srp") {
+          annual = credited * p.dollarsPerKwPerSeason * p.seasonsPerYear;
+        } else if (p.kind === "aps_cap") {
+          const cap = p.capPerBatteryYear * qty;
+          const maxCreditable = maxPowerTotal * perf;
+          const utilization = maxCreditable > 0 ? clamp(credited / maxCreditable, 0, 1) : 0;
+          annual = cap * utilization;
+        }
+
+        const monthly = annual / 12;
+
+        annualCreditEl.textContent = money0(annual);
+        monthlyCreditEl.textContent = money0(monthly);
+        creditNoteEl.textContent = p.note;
+      }
+
+      // Wire up
+      yearsRangeEl.addEventListener("input", () => { updateYearsUI(); calcUtility(); });
+      runBtn.addEventListener("click", calcUtility);
+
+      // keep input present; no output shown for it
+      solarPaymentEl.addEventListener("input", () => { /* intentionally no display */ });
+
+      fillBatteryModels();
+      setDerivedBatteryFields();
+      maybeAutoCommitKw();
+      calcCredit();
+
+      programEl.addEventListener("change", calcCredit);
+      batteryModelEl.addEventListener("change", () => { setDerivedBatteryFields(); maybeAutoCommitKw(); calcCredit(); });
+      batteryQtyEl.addEventListener("input", () => { setDerivedBatteryFields(); maybeAutoCommitKw(); calcCredit(); });
+      peakDemandKwEl.addEventListener("input", () => { maybeAutoCommitKw(); calcCredit(); });
+      autoFromDemandEl.addEventListener("change", () => { maybeAutoCommitKw(); calcCredit(); });
+      commitKwEl.addEventListener("input", () => { maybeAutoCommitKw(); calcCredit(); });
+      perfEl.addEventListener("input", () => { maybeAutoCommitKw(); calcCredit(); });
+      calcBatteryBtn.addEventListener("click", calcCredit);
+
+      updateYearsUI();
+      calcUtility();
+    })();
+  </script>
 </body>
 </html>
