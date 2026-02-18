@@ -114,9 +114,9 @@
     SRP_BATTERY_PARTNER: {
       label: "SRP Battery Partner",
       ratePerKwSeason: 55,
-      seasonsPerYear: 2,
+      seasonsPerYear: 1,
       note:
-        "SRP Battery Partner is $55 per kW per season, 2 seasons per year (annualized here). Actual payouts depend on measured event performance vs baseline."
+        "SRP Battery Partner is $55 per kW per season, 1 seasons per year (annualized here). Actual payouts depend on measured event performance vs baseline."
     }
   };
 
