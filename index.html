@@ -18,32 +18,124 @@
   <link rel="stylesheet" href="style.css?v=3" />
 
   <style>
-    /* keep totals cards evenly split on desktop, stack on mobile */
-    .totals.totals--2 { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
-    @media (max-width: 860px){ .totals.totals--2{ grid-template-columns:1fr; } }
+    /* keep your existing style.css; these are only add-ons/fixes */
 
-    /* rep resources buttons */
-    .rep-button-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:14px; margin-top:18px; }
-    .rep-btn{
-      display:block;
-      text-align:center;
-      padding:14px 18px;
-      border-radius:999px;
-      font-weight:700;
-      text-decoration:none;
-      background:#eef4ff;
-      color:#1f3c55;
-      border:1px solid rgba(31,60,85,.12);
-      transition:transform .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
+    /* force 2-up totals on desktop, stack on mobile */
+    .totals {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
     }
-    .rep-btn:hover{ transform:translateY(-2px); background:#157a5b; color:#fff; border-color:transparent; }
+    @media (max-width: 860px) {
+      .totals { grid-template-columns: 1fr; }
+    }
+
+    /* rep resources buttons (same “chip” vibe, but more button-like) */
+    .rep-button-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .rep-btn {
+      display: block;
+      text-align: center;
+      padding: 14px 18px;
+      border-radius: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      background: #f1f5f4;
+      color: #1f3c35;
+      border: 1px solid #e3e7e6;
+      transition: transform .15s ease, background .15s ease, color .15s ease;
+    }
+    .rep-btn:hover {
+      background: #157a5b;
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+    .rep-btn.primary {
+      background: #157a5b;
+      color: #ffffff;
+      border-color: #157a5b;
+    }
+    .rep-btn.primary:hover { background: #0f5f46; }
+
+    /* pricing row inside calculator */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 10px;
+    }
+    @media (max-width: 860px) {
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+    .hint {
+      font-size: 13px;
+      opacity: .75;
+      margin-top: 6px;
+      line-height: 1.35;
+    }
+    .readonly-pill {
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f6f8f8;
+      border: 1px solid #e8eeee;
+      font-weight: 800;
+      color: #143a33;
+    }
+
+    /* simple chart card */
+    .chart-wrap {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid #e8eeee;
+      background: #ffffff;
+    }
+    .chart-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .chart-title {
+      font-size: 16px;
+      font-weight: 900;
+      margin: 0;
+      color: #143a33;
+    }
+    .chart-sub {
+      font-size: 13px;
+      opacity: .7;
+      margin: 0;
+      text-align: right;
+    }
+    canvas { width: 100%; height: 220px; display: block; }
 
     /* responsive jotform embed */
-    .jotform-wrap{ position:relative; width:100%; padding-top:140%; border-radius:16px; overflow:hidden; border:0; }
-    .jotform-wrap iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
-    @media (min-width: 860px){ .jotform-wrap{ padding-top:95%; } }
+    .jotform-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 140%;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #e8eeee;
+      background: #ffffff;
+    }
+    .jotform-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    @media (min-width: 860px) {
+      .jotform-wrap { padding-top: 95%; }
+    }
   </style>
 </head>
 
@@ -83,11 +175,12 @@
     <p class="section-kicker">Direct access for BRZY reps.</p>
 
     <div class="rep-button-grid">
-      <a class="rep-btn" href="https://brzynrg.com" target="_blank" rel="noopener">BRZY NRG</a>
+      <a class="rep-btn primary" href="https://brzynrg.com" target="_blank" rel="noopener">BRZY NRG</a>
       <a class="rep-btn" href="https://brzy.university" target="_blank" rel="noopener">BRZY UNIVERSITY</a>
       <a class="rep-btn" href="https://brzy.university/recruiting" target="_blank" rel="noopener">BRZY RECRUITING</a>
       <a class="rep-btn" href="https://phx.gosolo.io/login" target="_blank" rel="noopener">GOSOLO</a>
       <a class="rep-btn" href="https://aurorasolar.com" target="_blank" rel="noopener">AURORA</a>
+      <a class="rep-btn" href="https://www.canva.com" target="_blank" rel="noopener">CANVA</a>
     </div>
   </section>
 
@@ -106,14 +199,16 @@
 
     <section class="card">
       <form id="calcForm" class="form-grid" onsubmit="return false;">
+
         <div class="field">
           <label for="bill">Monthly utility bill ($)</label>
           <input id="bill" type="number" min="0" step="1" placeholder="e.g., 180" inputmode="decimal" />
         </div>
 
         <div class="field">
-          <label for="solarPayment">Monthly Battery + solar payment ($)</label>
-          <input id="solarPayment" type="number" min="0" step="1" placeholder="e.g., 135" inputmode="decimal" />
+          <label for="solarPayment">Monthly solar + battery payment ($)</label>
+          <input id="solarPayment" type="number" min="0" step="1" placeholder="auto from panels + batteries" inputmode="decimal" />
+          <div class="hint">Reps: this auto-fills from panels ($10/mo each) + batteries ($66/mo each). You can still override it.</div>
         </div>
 
         <div class="field">
@@ -123,10 +218,8 @@
           </div>
         </div>
 
-        <input id="utilityEsc" type="hidden" value="0.09" />
-
         <div class="field span-2">
-          <label for="solarEsc">Battery escalator (PPA/lease rate increase)</label>
+          <label for="solarEsc">Escalator (solar plan rate increase)</label>
           <select id="solarEsc">
             <option value="0.0199" selected>1.99% per year</option>
             <option value="0.0299">2.99% per year</option>
@@ -135,20 +228,42 @@
           </select>
         </div>
 
+        <div class="field span-3">
+          <div class="pricing-grid">
+            <div class="field" style="margin:0;">
+              <label for="panelQty">Panels (adds $10/mo each)</label>
+              <input id="panelQty" type="number" min="0" step="1" value="0" inputmode="numeric" />
+            </div>
+
+            <div class="field" style="margin:0;">
+              <label for="priceBatteryQty">Batteries (adds $66/mo each)</label>
+              <input id="priceBatteryQty" type="number" min="0" step="1" value="0" inputmode="numeric" />
+            </div>
+
+            <div class="field" style="margin:0;">
+              <label>Auto monthly payment</label>
+              <div id="autoPayment" class="readonly-pill">$0</div>
+              <div class="hint">Auto = (panels × 10) + (batteries × 66)</div>
+            </div>
+          </div>
+        </div>
+
+        <input id="utilityEsc" type="hidden" value="0.09" />
+
         <div class="actions span-3">
           <button id="runBtn" class="btn" type="button">Calculate</button>
         </div>
       </form>
 
-      <div class="totals totals--2">
+      <div class="totals">
         <div class="total card-lite">
           <div class="total-label">Total Utility Cost</div>
           <div id="utilTotal" class="total-value">$0</div>
         </div>
 
         <div class="total card-lite">
-          <div class="total-label">Estimated Utility Monthly (Year <span id="snapYearMini">25</span>)</div>
-          <div id="utilMonthlyAtYear" class="total-value">$0</div>
+          <div class="total-label">Total Savings (Utility vs Solar)</div>
+          <div id="savingsTotal" class="total-value">$0</div>
         </div>
       </div>
 
@@ -159,14 +274,25 @@
         </header>
 
         <div class="snap-rows">
-          <div class="row"><span class="label">Monthly utility</span><span id="selMonthlyUtility" class="value">$0.00</span></div>
-          <div class="row"><span class="label">Annual utility</span><span id="selAnnualUtility" class="value">$0.00</span></div>
+          <div class="row"><span class="label">Monthly utility (est.)</span><span id="selMonthlyUtility" class="value">$0.00</span></div>
+          <div class="row"><span class="label">Monthly solar (est.)</span><span id="selMonthlySolar" class="value">$0.00</span></div>
+          <div class="row"><span class="label">Monthly savings (est.)</span><span id="selMonthlySavings" class="value">$0.00</span></div>
+          <div class="row"><span class="label">Annual savings (est.)</span><span id="selAnnualSavings" class="value">$0.00</span></div>
         </div>
       </article>
+
+      <div class="chart-wrap">
+        <div class="chart-head">
+          <p class="chart-title">Yearly savings</p>
+          <p class="chart-sub" id="chartSub">Utility escalation: 9% • Solar escalator: 1.99%</p>
+        </div>
+        <canvas id="savingsChart" width="1200" height="320"></canvas>
+        <div class="hint">Bars show estimated annual savings for each year in your selected timeline.</div>
+      </div>
     </section>
 
     <section class="card" id="battery-credit">
-      <div class="totals totals--2" style="margin-top:16px;">
+      <div class="totals" style="margin-top:16px;">
         <div class="total card-lite">
           <div class="total-label">Estimated monthly credit</div>
           <div id="monthlyCredit" class="total-value">$0</div>
@@ -289,99 +415,197 @@
       const $ = (id) => document.getElementById(id);
 
       const billEl = $("bill");
-      const solarPaymentEl = $("solarPayment"); // kept for your workflow, not displayed in totals
-      const yearsRangeEl = $("yearsRange");
+      const solarPaymentEl = $("solarPayment");
+      const yearsEl = $("yearsRange");
       const yearsDisplayEl = $("yearsDisplay");
-      const snapYearEl = $("snapYear");
-      const snapYearMiniEl = $("snapYearMini");
+      const solarEscEl = $("solarEsc");
       const utilityEscEl = $("utilityEsc");
+
+      const panelQtyEl = $("panelQty");
+      const priceBatteryQtyEl = $("priceBatteryQty");
+      const autoPaymentEl = $("autoPayment");
+
       const runBtn = $("runBtn");
 
       const utilTotalEl = $("utilTotal");
-      const utilMonthlyAtYearEl = $("utilMonthlyAtYear");
-      const selMonthlyUtilityEl = $("selMonthlyUtility");
-      const selAnnualUtilityEl = $("selAnnualUtility");
+      const savingsTotalEl = $("savingsTotal");
 
-      // Battery credit elements
+      const snapYearEl = $("snapYear");
+      const selMonthlyUtilityEl = $("selMonthlyUtility");
+      const selMonthlySolarEl = $("selMonthlySolar");
+      const selMonthlySavingsEl = $("selMonthlySavings");
+      const selAnnualSavingsEl = $("selAnnualSavings");
+
+      const chart = $("savingsChart");
+      const chartSub = $("chartSub");
+      const ctx = chart.getContext("2d");
+
+      function money(n) {
+        const x = Number.isFinite(n) ? n : 0;
+        return x.toLocaleString(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+      }
+      function money2(n) {
+        const x = Number.isFinite(n) ? n : 0;
+        return x.toLocaleString(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 2 });
+      }
+
+      function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
+
+      function computeAutoPayment() {
+        const panels = Math.max(0, parseInt(panelQtyEl.value || "0", 10));
+        const bats = Math.max(0, parseInt(priceBatteryQtyEl.value || "0", 10));
+        const auto = panels * 10 + bats * 66;
+        autoPaymentEl.textContent = money(auto);
+
+        // if empty or equals previous auto-ish, keep it synced
+        const current = parseFloat(solarPaymentEl.value || "");
+        if (!Number.isFinite(current) || solarPaymentEl.dataset.userOverride !== "1") {
+          solarPaymentEl.value = auto ? String(auto) : "";
+          solarPaymentEl.dataset.userOverride = "0";
+        }
+        return auto;
+      }
+
+      function getInputs() {
+        const bill = Math.max(0, parseFloat(billEl.value || "0"));
+        const years = Math.max(1, parseInt(yearsEl.value || "25", 10));
+        const utilEsc = clamp(parseFloat(utilityEscEl.value || "0.09"), 0, 1);
+        const solarEsc = clamp(parseFloat(solarEscEl.value || "0.0199"), 0, 1);
+        const solarStart = Math.max(0, parseFloat(solarPaymentEl.value || "0"));
+
+        return { bill, years, utilEsc, solarEsc, solarStart };
+      }
+
+      function calcSeries() {
+        const { bill, years, utilEsc, solarEsc, solarStart } = getInputs();
+        const utilAnnual = [];
+        const solarAnnual = [];
+        const savingsAnnual = [];
+
+        for (let y = 1; y <= years; y++) {
+          const utilMonthlyY = bill * Math.pow(1 + utilEsc, y - 1);
+          const solarMonthlyY = solarStart * Math.pow(1 + solarEsc, y - 1);
+
+          const u = utilMonthlyY * 12;
+          const s = solarMonthlyY * 12;
+          const save = u - s;
+
+          utilAnnual.push(u);
+          solarAnnual.push(s);
+          savingsAnnual.push(save);
+        }
+
+        const utilTotal = utilAnnual.reduce((a, b) => a + b, 0);
+        const solarTotal = solarAnnual.reduce((a, b) => a + b, 0);
+        const savingsTotal = utilTotal - solarTotal;
+
+        return { utilAnnual, solarAnnual, savingsAnnual, utilTotal, solarTotal, savingsTotal };
+      }
+
+      function drawChart(values) {
+        const W = chart.width;
+        const H = chart.height;
+        ctx.clearRect(0, 0, W, H);
+
+        // padding
+        const padL = 40, padR = 16, padT = 10, padB = 28;
+        const innerW = W - padL - padR;
+        const innerH = H - padT - padB;
+
+        const maxVal = Math.max(1, ...values.map(v => Math.max(0, v)));
+        const barCount = values.length;
+        const gap = 6;
+        const barW = Math.max(6, (innerW - gap * (barCount - 1)) / barCount);
+
+        // axis line
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = "#e6eceb";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(padL, padT + innerH);
+        ctx.lineTo(padL + innerW, padT + innerH);
+        ctx.stroke();
+
+        // bars
+        for (let i = 0; i < barCount; i++) {
+          const v = Math.max(0, values[i]);
+          const h = (v / maxVal) * innerH;
+          const x = padL + i * (barW + gap);
+          const y = padT + (innerH - h);
+
+          // bar fill (use existing brand green via rgba)
+          ctx.fillStyle = "rgba(21, 122, 91, 0.85)";
+          ctx.fillRect(x, y, barW, h);
+
+          // occasional year labels
+          if (barCount <= 12 || (i === 0 || i === barCount - 1 || (i + 1) % 5 === 0)) {
+            ctx.fillStyle = "rgba(20, 58, 51, 0.70)";
+            ctx.font = "16px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(String(i + 1), x + barW / 2, padT + innerH + 20);
+          }
+        }
+
+        // max label
+        ctx.fillStyle = "rgba(20, 58, 51, 0.65)";
+        ctx.font = "16px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+        ctx.textAlign = "left";
+        ctx.fillText(money(maxVal), 6, 20);
+      }
+
+      function render() {
+        yearsDisplayEl.textContent = yearsEl.value;
+        snapYearEl.textContent = yearsEl.value;
+
+        const { utilAnnual, solarAnnual, savingsAnnual, utilTotal, savingsTotal } = calcSeries();
+        utilTotalEl.textContent = money(utilTotal);
+        savingsTotalEl.textContent = money(savingsTotal);
+
+        const years = utilAnnual.length;
+        const utilMonthlyY = utilAnnual[years - 1] / 12;
+        const solarMonthlyY = solarAnnual[years - 1] / 12;
+        const savingsMonthlyY = (utilAnnual[years - 1] - solarAnnual[years - 1]) / 12;
+        const savingsAnnualY = savingsAnnual[years - 1];
+
+        selMonthlyUtilityEl.textContent = money2(utilMonthlyY);
+        selMonthlySolarEl.textContent = money2(solarMonthlyY);
+        selMonthlySavingsEl.textContent = money2(savingsMonthlyY);
+        selAnnualSavingsEl.textContent = money2(savingsAnnualY);
+
+        const utilEsc = parseFloat(utilityEscEl.value || "0.09");
+        const solarEsc = parseFloat(solarEscEl.value || "0.0199");
+        chartSub.textContent = "Utility escalation: " + Math.round(utilEsc * 100) + "% • Solar escalator: " + (solarEsc * 100).toFixed(2) + "%";
+
+        drawChart(savingsAnnual);
+      }
+
+      // battery credit calculator (kept simple + stable)
       const programEl = $("program");
       const batteryModelEl = $("batteryModel");
       const batteryQtyEl = $("batteryQty");
-      const peakDemandKwEl = $("peakDemandKw");
+      const peakDemandEl = $("peakDemandKw");
       const autoFromDemandEl = $("autoFromDemand");
       const commitKwEl = $("commitKw");
       const perfEl = $("perf");
+
       const usableKwhEl = $("usableKwh");
       const powerKwEl = $("powerKw");
       const creditedKwEl = $("creditedKw");
-      const calcBatteryBtn = $("calcBatteryBtn");
       const monthlyCreditEl = $("monthlyCredit");
       const annualCreditEl = $("annualCredit");
       const creditNoteEl = $("creditNote");
+      const calcBatteryBtn = $("calcBatteryBtn");
 
-      const money0 = (n) => {
-        const v = Number.isFinite(n) ? n : 0;
-        return v.toLocaleString(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 0 });
-      };
-      const money2 = (n) => {
-        const v = Number.isFinite(n) ? n : 0;
-        return v.toLocaleString(undefined, { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      };
-      const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
-
-      function updateYearsUI() {
-        const y = Number(yearsRangeEl.value || 25);
-        yearsDisplayEl.textContent = String(y);
-        snapYearEl.textContent = String(y);
-        snapYearMiniEl.textContent = String(y);
-      }
-
-      function calcUtility() {
-        const bill = parseFloat(billEl.value || "0");
-        const years = Number(yearsRangeEl.value || 25);
-        const esc = parseFloat(utilityEscEl.value || "0.09");
-
-        // total utility cost over years with annual escalation
-        let total = 0;
-        for (let i = 0; i < years; i++) {
-          const yearFactor = Math.pow(1 + esc, i);
-          total += bill * 12 * yearFactor;
-        }
-
-        const snapMonthly = bill * Math.pow(1 + esc, years - 1);
-        const snapAnnual = snapMonthly * 12;
-
-        utilTotalEl.textContent = money0(total);
-        utilMonthlyAtYearEl.textContent = money0(snapMonthly);
-        selMonthlyUtilityEl.textContent = money2(snapMonthly);
-        selAnnualUtilityEl.textContent = money2(snapAnnual);
-      }
-
-      // Battery models + program parameters
-      const batteryModels = [
-        { id: "PW3", label: "Tesla Powerwall 3", usableKwh: 13.5, powerKw: 11.5, note: "Typical values" },
-        { id: "PW2", label: "Tesla Powerwall 2", usableKwh: 13.5, powerKw: 5.0, note: "Typical values" },
-        { id: "ENCHARGE10", label: "Enphase IQ Battery 10T", usableKwh: 10.0, powerKw: 3.84, note: "Typical values" }
+      const BATTERIES = [
+        { id: "PW3", label: "Tesla Powerwall 3", usableKwh: 13.5, powerKw: 11.5, note: "Common AZ setup." },
+        { id: "PW2", label: "Tesla Powerwall 2", usableKwh: 13.5, powerKw: 5.0, note: "Older model." },
+        { id: "ENCHARGE10", label: "Enphase IQ Battery 10T", usableKwh: 10.1, powerKw: 3.84, note: "Modular." },
+        { id: "FRANKLIN", label: "FranklinWH aPower", usableKwh: 13.6, powerKw: 5.0, note: "Whole-home style." },
       ];
-
-      const programs = {
-        SRP_BATTERY_PARTNER: {
-          label: "SRP Battery Partner",
-          kind: "srp",
-          dollarsPerKwPerSeason: 55,
-          seasonsPerYear: 2,
-          note: "SRP Battery Partner is $55 per kW per season, 2 seasons per year. Actual payouts depend on events and performance."
-        },
-        APS_TESLA_VPP: {
-          label: "APS Tesla VPP",
-          kind: "aps_cap",
-          capPerBatteryYear: 1200, // model: annual cap per battery, scaled by delivered power
-          note: "APS Tesla VPP estimate uses an annual cap model scaled by credited kW and performance."
-        }
-      };
 
       function fillBatteryModels() {
         batteryModelEl.innerHTML = "";
-        batteryModels.forEach((b) => {
+        BATTERIES.forEach(b => {
           const opt = document.createElement("option");
           opt.value = b.id;
           opt.textContent = b.label;
@@ -390,95 +614,89 @@
         batteryModelEl.value = "PW3";
       }
 
-      function getSelectedBattery() {
-        return batteryModels.find((b) => b.id === batteryModelEl.value) || batteryModels[0];
-      }
-
-      function setDerivedBatteryFields() {
-        const b = getSelectedBattery();
-        const qty = Math.max(1, parseInt(batteryQtyEl.value || "1", 10));
-        usableKwhEl.value = (b.usableKwh * qty).toFixed(1);
-        powerKwEl.value = (b.powerKw * qty).toFixed(2);
-      }
-
-      function maybeAutoCommitKw() {
-        const b = getSelectedBattery();
-        const qty = Math.max(1, parseInt(batteryQtyEl.value || "1", 10));
-        const maxPowerTotal = b.powerKw * qty;
-
-        const autoOn = String(autoFromDemandEl.value) === "1";
-        const peak = parseFloat(peakDemandKwEl.value || "");
-
-        if (autoOn && Number.isFinite(peak) && peak > 0) {
-          // simple heuristic: target ~90% of peak, capped by battery power
-          const perBattery = clamp((peak * 0.9) / qty, 0, b.powerKw);
-          commitKwEl.value = perBattery.toFixed(1);
-        } else {
-          // keep whatever the user typed
-        }
-
-        // update credited field preview
-        const perf = clamp(parseFloat(perfEl.value || "0.85"), 0, 1);
-        const commitPerBattery = clamp(parseFloat(commitKwEl.value || "0"), 0, b.powerKw);
-        const credited = commitPerBattery * qty * perf;
-        creditedKwEl.value = credited.toFixed(2);
+      function getBattery() {
+        return BATTERIES.find(b => b.id === batteryModelEl.value) || BATTERIES[0];
       }
 
       function calcCredit() {
-        const p = programs[programEl.value] || programs.SRP_BATTERY_PARTNER;
-        const b = getSelectedBattery();
+        const p = programEl.value;
         const qty = Math.max(1, parseInt(batteryQtyEl.value || "1", 10));
         const perf = clamp(parseFloat(perfEl.value || "0.85"), 0, 1);
 
-        setDerivedBatteryFields();
+        const b = getBattery();
+        usableKwhEl.value = (b.usableKwh * qty).toFixed(1);
+        powerKwEl.value = (b.powerKw * qty).toFixed(2);
 
-        const commitPerBattery = clamp(parseFloat(commitKwEl.value || "0"), 0, b.powerKw);
-        const maxPowerTotal = b.powerKw * qty;
+        // auto set commit kw from demand if provided
+        const demand = Math.max(0, parseFloat(peakDemandEl.value || "0"));
+        if (autoFromDemandEl.value === "1" && demand > 0) {
+          // conservative: a portion of demand, capped by battery power
+          const cap = b.powerKw;
+          const suggested = clamp(demand * 0.65, 1, cap);
+          commitKwEl.value = suggested.toFixed(1);
+        }
 
-        const credited = clamp(commitPerBattery * qty * perf, 0, maxPowerTotal * perf);
+        const commitPerBattery = Math.max(0, parseFloat(commitKwEl.value || "0"));
+        const committed = commitPerBattery * qty;
+        const maxPower = b.powerKw * qty;
+
+        const credited = Math.min(committed, maxPower) * perf;
         creditedKwEl.value = credited.toFixed(2);
 
         let annual = 0;
+        let note = "";
 
-        if (p.kind === "srp") {
-          annual = credited * p.dollarsPerKwPerSeason * p.seasonsPerYear;
-        } else if (p.kind === "aps_cap") {
-          const cap = p.capPerBatteryYear * qty;
-          const maxCreditable = maxPowerTotal * perf;
-          const utilization = maxCreditable > 0 ? clamp(credited / maxCreditable, 0, 1) : 0;
-          annual = cap * utilization;
+        if (p === "SRP_BATTERY_PARTNER") {
+          // SRP: $55 per kW per season, 2 seasons/year => $110 per kW-year (estimate)
+          annual = credited * 110;
+          note = "SRP Battery Partner estimate uses $55 per kW per season × 2 seasons/year (performance-adjusted).";
+        } else {
+          // APS Tesla VPP: simplified annual cap model estimate (placeholder style)
+          // Use a conservative $80 per kW-year estimate with a soft cap
+          const cappedKw = Math.min(credited, 20);
+          annual = cappedKw * 80;
+          note = "APS Tesla VPP estimate is simplified and conservative; actual payouts vary by events and caps.";
         }
 
         const monthly = annual / 12;
 
-        annualCreditEl.textContent = money0(annual);
-        monthlyCreditEl.textContent = money0(monthly);
-        creditNoteEl.textContent = p.note;
+        annualCreditEl.textContent = money(annual);
+        monthlyCreditEl.textContent = money(monthly);
+        creditNoteEl.textContent = note + " " + (b.note ? ("Battery: " + b.label + ". " + b.note) : "");
       }
 
-      // Wire up
-      yearsRangeEl.addEventListener("input", () => { updateYearsUI(); calcUtility(); });
-      runBtn.addEventListener("click", calcUtility);
+      // events
+      yearsEl.addEventListener("input", () => {
+        yearsDisplayEl.textContent = yearsEl.value;
+        snapYearEl.textContent = yearsEl.value;
+      });
 
-      // keep input present; no output shown for it
-      solarPaymentEl.addEventListener("input", () => { /* intentionally no display */ });
+      panelQtyEl.addEventListener("input", () => { computeAutoPayment(); });
+      priceBatteryQtyEl.addEventListener("input", () => { computeAutoPayment(); });
 
-      fillBatteryModels();
-      setDerivedBatteryFields();
-      maybeAutoCommitKw();
-      calcCredit();
+      solarPaymentEl.addEventListener("input", () => {
+        // mark as override if user types
+        solarPaymentEl.dataset.userOverride = "1";
+      });
 
-      programEl.addEventListener("change", calcCredit);
-      batteryModelEl.addEventListener("change", () => { setDerivedBatteryFields(); maybeAutoCommitKw(); calcCredit(); });
-      batteryQtyEl.addEventListener("input", () => { setDerivedBatteryFields(); maybeAutoCommitKw(); calcCredit(); });
-      peakDemandKwEl.addEventListener("input", () => { maybeAutoCommitKw(); calcCredit(); });
-      autoFromDemandEl.addEventListener("change", () => { maybeAutoCommitKw(); calcCredit(); });
-      commitKwEl.addEventListener("input", () => { maybeAutoCommitKw(); calcCredit(); });
-      perfEl.addEventListener("input", () => { maybeAutoCommitKw(); calcCredit(); });
+      runBtn.addEventListener("click", render);
+
       calcBatteryBtn.addEventListener("click", calcCredit);
+      programEl.addEventListener("change", calcCredit);
+      batteryModelEl.addEventListener("change", calcCredit);
+      batteryQtyEl.addEventListener("input", calcCredit);
+      peakDemandEl.addEventListener("input", calcCredit);
+      autoFromDemandEl.addEventListener("change", calcCredit);
+      commitKwEl.addEventListener("input", calcCredit);
+      perfEl.addEventListener("input", calcCredit);
 
-      updateYearsUI();
-      calcUtility();
+      // init
+      yearsDisplayEl.textContent = yearsEl.value;
+      snapYearEl.textContent = yearsEl.value;
+      fillBatteryModels();
+      computeAutoPayment();
+      render();
+      calcCredit();
     })();
   </script>
 </body>
