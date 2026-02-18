@@ -16,7 +16,40 @@
   <meta name="twitter:image" content="https://thefreedompro.github.io/BRZY/FullSizeRender.jpeg" />
 
   <link rel="stylesheet" href="style.css?v=3" />
+.rep-button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
 
+.rep-btn {
+  display: block;
+  text-align: center;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  background: #f1f5f4;
+  color: #1f3c35;
+  transition: all 0.2s ease;
+  border: 1px solid #e3e7e6;
+}
+
+.rep-btn:hover {
+  background: #157a5b;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.rep-btn.primary {
+  background: #157a5b;
+  color: #ffffff;
+}
+
+.rep-btn.primary:hover {
+  background: #0f5f46;
+}
   <style>
     /* forces the 2 tiles to sit evenly side-by-side (desktop), stack on mobile */
     .totals.totals--2{grid-template-columns:repeat(2,1fr)}
