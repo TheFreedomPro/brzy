@@ -1,149 +1,258 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>AIDAN LEAVITT BRZY Solutions</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AIDAN LEAVITT BRZY Solutions</title>
 
-<meta property="og:title" content="Aidan Leavitt | BRZY Solutions" />
-<meta property="og:description" content="Quick Solar Savings Calculator + proof, map, and partners." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://thefreedompro.github.io/BRZY/" />
-<meta property="og:image" content="https://thefreedompro.github.io/BRZY/FullSizeRender.jpeg" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://thefreedompro.github.io/BRZY/FullSizeRender.jpeg" />
+  <meta property="og:title" content="Aidan Leavitt | BRZY Solutions" />
+  <meta property="og:description" content="Quick Solar Savings Calculator + proof, map, and partners." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://thefreedompro.github.io/BRZY/" />
+  <meta property="og:image" content="https://thefreedompro.github.io/BRZY/FullSizeRender.jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://thefreedompro.github.io/BRZY/FullSizeRender.jpeg" />
 
-<link rel="stylesheet" href="style.css?v=3" />
+  <link rel="stylesheet" href="style.css?v=3" />
+
+  <style>
+    /* forces the 2 tiles to sit evenly side-by-side (desktop), stack on mobile */
+    .totals.totals--2{grid-template-columns:repeat(2,1fr)}
+    @media (max-width:860px){.totals.totals--2{grid-template-columns:1fr}}
+    /* center ABOUT US block */
+    #more-links, #more-links .section-title, #more-links .section-kicker{ text-align:center }
+    #more-links .link-chips{ justify-content:center }
+    /* keep BRZY logo clean on right, drop under on mobile */
+    .hero__inner{display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .hero__content{max-width:640px}
+    .brzy-logo{max-width:420px;height:auto;object-fit:contain}
+    @media (max-width:600px){
+      .hero__inner{flex-direction:column;align-items:center;text-align:center}
+      .hero__content{max-width:100%}
+      .brzy-logo{max-width:85%;margin:10px auto 0}
+      .hero__logos{justify-content:center}
+    }
+    /* responsive jotform embed */
+    .jotform-wrap{position:relative;width:100%;padding-top:140%}
+    .jotform-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+    @media (min-width:860px){.jotform-wrap{padding-top:95%}}
+  </style>
 </head>
 
 <body>
 
-<header class="hero">
-<div class="container">
-<div class="hero__inner">
-<div class="hero__content">
-<h1 class="title">Calculate Your Savings</h1>
-<p class="subtitle">See how switching to solar can reduce your electricity costs over time.</p>
-</div>
-<img src="IMG_4892.jpeg" alt="BRZY Solutions" class="brzy-logo" />
-</div>
+  <header class="hero">
+    <div class="container">
 
-<div class="hero__logos">
-<img src="IMG_4883.jpeg" alt="SRP" class="utility-logo" />
-<img src="IMG_4884.jpeg" alt="APS" class="utility-logo" />
-</div>
-</div>
-</header>
+      <div class="hero__inner">
+        <div class="hero__content">
+          <h1 class="title">Calculate Your Savings</h1>
+          <p class="subtitle">See how switching to solar can reduce your electricity costs over time.</p>
+        </div>
 
-<section class="links card" id="more-links">
-<h2 class="section-title">ABOUT US</h2>
-<p class="section-kicker">Independent coverage, rankings, and public profiles.</p>
-<ul class="link-chips">
-<li><a href="https://www.google.com/search?q=aidan%20leavitt%20new%20hampshire" target="_blank">AIDAN LEAVITT — Google</a></li>
-<li><a href="https://www.bbb.org/us/az/phoenix/profile/solar-installation/independent-solar-1126-1000110842" target="_blank">BBB A+ RATING — Google</a></li>
-<li><a href="https://www.aps.com/en/About/Sustainability-and-Innovation/Technology-and-Innovation/Storage-Rewards" target="_blank">APS VPP INCENTIVE</a></li>
-<li><a href="https://www.srpnet.com/energy-savings-rebates/home/residential-solar/battery-partner" target="_blank">SRP PARTNER PROGRAM</a></li>
-</ul>
-</section>
+        <img src="IMG_4892.jpeg" alt="BRZY Solutions" class="brzy-logo" />
+      </div>
 
-<main class="container">
+      <div class="hero__logos">
+        <img src="IMG_4883.jpeg" alt="SRP" class="utility-logo" />
+        <img src="IMG_4884.jpeg" alt="APS" class="utility-logo" />
+      </div>
 
-<section class="card" id="battery-credit">
-<div class="totals" style="margin-top:16px;">
-<div class="total card-lite">
-<div class="total-label">Estimated monthly credit</div>
-<div id="monthlyCredit" class="total-value">$0</div>
-</div>
-<div class="total card-lite">
-<div class="total-label">Estimated annual credit</div>
-<div id="annualCredit" class="total-value">$0</div>
-</div>
-</div>
+    </div>
+  </header>
 
-<p id="creditNote" class="section-kicker" style="margin-top:12px;"></p>
+  <section class="links card" id="more-links">
+    <h2 class="section-title">ABOUT US</h2>
+    <p class="section-kicker">Independent coverage, rankings, and public profiles.</p>
+    <ul class="link-chips">
+      <li><a href="https://www.google.com/search?q=aidan%20leavitt%20new%20hampshire" target="_blank" rel="noopener">AIDAN LEAVITT — Google</a></li>
+      <li><a href="https://www.bbb.org/us/az/phoenix/profile/solar-installation/independent-solar-1126-1000110842" target="_blank" rel="noopener">BBB A+ RATING — Google</a></li>
+      <li><a href="https://www.aps.com/en/About/Sustainability-and-Innovation/Technology-and-Innovation/Storage-Rewards" target="_blank" rel="noopener">APS VPP INCENTIVE</a></li>
+      <li><a href="https://www.srpnet.com/energy-savings-rebates/home/residential-solar/battery-partner" target="_blank" rel="noopener">SRP PARTNER PROGRAM</a></li>
+    </ul>
+  </section>
 
-<h2 class="section-title">Battery Program Credit (APS or SRP)</h2>
+  <main class="container">
 
-<div class="form-grid" style="margin-top:14px;">
-<div class="field">
-<label for="program">Utility / Program</label>
-<select id="program">
-<option value="APS_TESLA_VPP">APS Tesla VPP (annual cap model)</option>
-<option value="SRP_BATTERY_PARTNER" selected>SRP Battery Partner (kW per season)</option>
-</select>
-</div>
+    <div class="phone-header">
+      <div class="phone-text">
+        <p class="phone-number">
+          <a href="sms:16037679594?&body=SOLAR">CLICK HERE FOR QUESTIONS?</a>
+        </p>
+        <p style="font-size:16px;font-weight:700;color:#157a5b;margin:4px 0 0 0;">
+          ⬆️ Click Questions? above to see
+        </p>
+      </div>
+    </div>
 
-<div class="field">
-<label for="batteryModel">Battery model</label>
-<select id="batteryModel"></select>
-</div>
+    <section class="card">
+      <form id="calcForm" class="form-grid" onsubmit="return false;">
+        <div class="field">
+          <label for="bill">Monthly utility bill ($)</label>
+          <input id="bill" type="number" min="0" step="1" placeholder="e.g., 180" inputmode="decimal" />
+        </div>
 
-<div class="field">
-<label for="batteryQty">Battery quantity</label>
-<input id="batteryQty" type="number" min="1" step="1" value="1" />
-</div>
+        <div class="field">
+          <label for="yearsRange">Timeline (years): <span id="yearsDisplay">25</span></label>
+          <div class="range-wrap">
+            <input id="yearsRange" type="range" min="1" max="30" value="25" />
+          </div>
+        </div>
 
-<div class="field">
-<label for="peakDemandKw">Peak demand from bill (kW)</label>
-<input id="peakDemandKw" type="number" min="0" step="0.1" />
-</div>
+        <input id="utilityEsc" type="hidden" value="0.09" />
 
-<div class="field">
-<label for="autoFromDemand">Auto-set event kW</label>
-<select id="autoFromDemand">
-<option value="1" selected>On</option>
-<option value="0">Off</option>
-</select>
-</div>
+        <div class="actions span-3">
+          <button id="runBtn" class="btn" type="button">Calculate</button>
+        </div>
+      </form>
 
-<div class="field">
-<label for="commitKw">Avg event kW per battery</label>
-<input id="commitKw" type="number" min="0" step="0.1" value="13.5" />
-</div>
+      <div class="totals totals--2">
+        <div class="total card-lite">
+          <div class="total-label">Total Utility Cost</div>
+          <div id="utilTotal" class="total-value">$0</div>
+        </div>
 
-<div class="field">
-<label for="perf">Performance factor</label>
-<input id="perf" type="number" min="0" max="1" step="0.01" value="0.85" />
-</div>
+        <div class="total card-lite">
+          <div class="total-label">Total Utility Bill Savings</div>
+          <div id="savings" class="total-value">$0</div>
+        </div>
+      </div>
 
-<div class="field">
-<label for="usableKwh">Estimated usable energy (kWh)</label>
-<input id="usableKwh" type="text" readonly />
-</div>
+      <article class="snapshot card-lite">
+        <header class="snap-header">
+          <h2 class="snap-year">Year <span id="snapYear">25</span></h2>
+          <span class="snap-tag">Snapshot</span>
+        </header>
 
-<div class="field">
-<label for="powerKw">Max discharge power (kW)</label>
-<input id="powerKw" type="text" readonly />
-</div>
+        <div class="snap-rows">
+          <div class="row"><span class="label">Monthly utility</span><span id="selMonthlyUtility" class="value">$0.00</span></div>
+          <div class="row"><span class="label">Monthly savings</span><span id="selMonthlySavings" class="value">$0.00</span></div>
+          <div class="row"><span class="label">Annual savings</span><span id="selAnnualSavings" class="value">$0.00</span></div>
+        </div>
+      </article>
+    </section>
 
-<div class="field">
-<label for="creditedKw">Credited kW</label>
-<input id="creditedKw" type="text" readonly />
-</div>
+    <section class="card" id="battery-credit">
+      <h2 class="section-title">Battery Program Credit (APS or SRP)</h2>
+      <p class="section-kicker">
+        This is an estimate based on event performance (kW delivered during events), not monthly kWh usage.
+        If your bill shows peak demand (kW), enter it to personalize the estimate.
+      </p>
 
-<div class="actions span-3">
-<button id="calcBatteryBtn" class="btn" type="button">Calculate credit</button>
-</div>
-</div>
-</section>
+      <div class="totals totals--2" style="margin-top:16px;">
+        <div class="total card-lite">
+          <div class="total-label">Estimated monthly credit</div>
+          <div id="monthlyCredit" class="total-value">$0</div>
+        </div>
 
-<section class="card" id="intake-form">
-<h2 class="section-title">Get Qualified</h2>
-<p class="section-kicker">Fill this out and we’ll finalize your savings + lock incentives.</p>
+        <div class="total card-lite">
+          <div class="total-label">Estimated annual credit</div>
+          <div id="annualCredit" class="total-value">$0</div>
+        </div>
+      </div>
 
-<div style="width:100%; margin-top:16px;">
-<iframe
-src="https://form.jotform.com/233164587079062"
-style="width:100%; height:950px; border:0; border-radius:16px;"
-scrolling="no">
-</iframe>
-</div>
-</section>
+      <p id="creditNote" class="section-kicker" style="margin-top:12px;"></p>
 
-</main>
+      <div class="form-grid" style="margin-top:14px;">
+        <div class="field">
+          <label for="program">Utility / Program</label>
+          <select id="program">
+            <option value="APS_TESLA_VPP" selected>APS Tesla VPP (annual cap model)</option>
+            <option value="SRP_BATTERY_PARTNER">SRP Battery Partner (kW per season)</option>
+          </select>
+        </div>
 
-<script src="script.js?v=3" defer></script>
+        <div class="field">
+          <label for="batteryModel">Battery model</label>
+          <select id="batteryModel"></select>
+        </div>
+
+        <div class="field">
+          <label for="batteryQty">Battery quantity</label>
+          <input id="batteryQty" type="number" min="1" step="1" value="1" inputmode="numeric" />
+        </div>
+
+        <div class="field">
+          <label for="peakDemandKw">Peak demand from bill (kW) optional</label>
+          <input id="peakDemandKw" type="number" min="0" step="0.1" placeholder="e.g., 8.5" inputmode="decimal" />
+        </div>
+
+        <div class="field">
+          <label for="autoFromDemand">Auto-set event kW from demand</label>
+          <select id="autoFromDemand">
+            <option value="1" selected>On (recommended)</option>
+            <option value="0">Off (manual)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="commitKw">Avg event kW per battery (editable)</label>
+          <input id="commitKw" type="number" min="0" step="0.1" value="4.5" inputmode="decimal" />
+        </div>
+
+        <div class="field">
+          <label for="perf">Performance factor (standard)</label>
+          <input id="perf" type="number" min="0" max="1" step="0.01" value="0.85" inputmode="decimal" />
+        </div>
+
+        <div class="field">
+          <label for="usableKwh">Estimated usable energy (kWh)</label>
+          <input id="usableKwh" type="text" readonly />
+        </div>
+
+        <div class="field">
+          <label for="powerKw">Max discharge power (kW)</label>
+          <input id="powerKw" type="text" readonly />
+        </div>
+
+        <div class="field">
+          <label for="creditedKw">Credited kW (avg)</label>
+          <input id="creditedKw" type="text" readonly />
+        </div>
+
+        <div class="actions span-3">
+          <button id="calcBatteryBtn" class="btn" type="button">Calculate credit</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="reviews">
+      <h2 class="section-title">What local homeowners are saying</h2>
+      <p class="section-kicker">Independent public feedback from real customers.</p>
+      <div class="reviews-grid">
+        <figure class="rev"><img src="IMG_4873.jpeg" alt="Freedom Forever" /></figure>
+        <figure class="rev"><img src="IMG_4875.jpeg" alt="Freedom Forever" /></figure>
+        <figure class="rev"><img src="IMG_4877.jpeg" alt="Freedom Forever" /></figure>
+        <figure class="rev"><img src="IMG_4878.jpeg" alt="Freedom Forever" /></figure>
+        <figure class="rev"><img src="IMG_4879.jpeg" alt="Brad review" /></figure>
+        <figure class="rev"><img src="IMG_4876.jpeg" alt="Tammy review" /></figure>
+      </div>
+    </section>
+
+    <section class="slides">
+      <img src="02D5DE42-86E4-47FB-9EA8-5A0BB9E3F7DF.png" alt="Sponsors" loading="lazy" />
+      <img src="87641ED5-805B-417F-959C-DE5972223E0E.png" alt="FAQ" loading="lazy" />
+      <img src="171F7CB4-3F6B-41ED-A2DF-F6D7486D49E1.png" alt="Quality call" loading="lazy" />
+    </section>
+
+    <section class="card" id="lead-form">
+      <h2 class="section-title">Quick Form</h2>
+      <p class="section-kicker">Fill this out at the end to lock in the details.</p>
+
+      <div class="jotform-wrap">
+        <iframe
+          src="https://form.jotform.com/233164587079062"
+          title="Jotform"
+          loading="lazy"
+          allow="geolocation; microphone; camera"
+        ></iframe>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js?v=3" defer></script>
 </body>
 </html>
